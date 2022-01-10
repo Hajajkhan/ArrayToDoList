@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckBox Todo List</title>
+</head>
+<body>
+    <button id="btn1" onclick="addLocal()">Save Data In Local storage </button><br>
+    <input type="text" id="input1" value="";><br>
+    <button id="add" onclick="funcAppendList()" type="button">Add Text</button>
+    <button id="update" onclick="funcUpdate()" type="button">Update</button>
+    <div id="unOrdered">Parent Div </div>
+    <p id="demo"></p>
+    <script>
+        /*
+         * using these statement for to store the data in localstorage
+         *  localstorage can save the strings or objects
+         * for store the string type data in local storage we use the JSON.stringify() keyword.
+         */
+         //JSON.parse(window.localStorage.getItem('user'));
+            const localEle=localStorage.getItem('key');
+            console.log(localEle);
+            var localEle2= JSON.parse(localEle);
+            console.log(localEle2);
+           //document.write(localEle2);
+         //const localEle=JSON.parse(localStorage.getItem('key') || "[]") ;
+            if(localEle){
+            document.getElementById('btn1').style.display="none";
+            }
+        //Global Variable Declaration
+        var array=localEle2;
+        let a=null;
+        let b=null;
+        document.getElementById("update").style.display = "none";
+        
+        //=========================================//
+        function funcAppendList() {
+            //make a variable in which we assign the value from random for to assign with ID name because we can get the new Id with name wity every list item
+            var random = Math.floor(Math.random() * 100 + 1).toPrecision();
+            var x = document.getElementById('input1').value;
+            //Creating Elements
+            var appendEle = document.createElement('LI');
+            var appendInput=document.createElement('Input');
+            var appendSpan=document.createElement('SPAN');
+            var appendBtn = document.createElement('BUTTON');
+            var appendBtn2 = document.createElement('BUTTON');
+            //Type of Elements
+            appendInput.type="checkbox";
+            //Inner HTML of Append Elements
+            appendSpan.innerHTML=x;
+            appendBtn.innerHTML = "DELETE";
+            appendBtn2.innerHTML = "Edit";
+            //assigning Id to Append Elements
+            appendInput.id="inputId"+random;
+            appendSpan.id="spanId"+random;
+            appendEle.id = "subId" + random;
+            appendBtn2.id = "subId";
+            //it will call function onclick and we can use the syntax as "() =>" in the place of function()
+            appendBtn.onclick = function () {
+                deleteList("subId" + random);
+            }
+            appendBtn2.onclick = function () {
+                editButton("spanId"+random);
+                funcDisplay("spanId"+random);
+            }
+            appendInput.onclick=function(){
+                check("spanId"+random)
+            }
+            appendInput.ondblclick=function(){
+                uncheck("spanId"+random)
+            }
+            //appending in appendchild
+            appendEle.appendChild(appendInput);
+            appendEle.appendChild(appendSpan);
+            appendEle.appendChild(appendBtn);
+            appendEle.appendChild(appendBtn2);
+            //===========//
+            document.getElementById('unOrdered').appendChild(appendEle);
+            console.log(appendEle);
+            document.getElementById('input1').value="";
+
+            //======= Pushing the list items or strings in Array ============//
+            array.push(x);
+            console.log(array);
+            //document.getElementById('btn1').style.display="block";
+        }
+        //make a function for append button for deleting element
+        function deleteList(id) {
+            //console.log(id);
+            var btnlist = document.getElementById(id);
+            btnlist.remove()
+        }
+        //=========================05/12/2021===============================//
+        //Function for Edit the Statement
+        function editButton(id) {
+            var defaultvalue = document.getElementById(id).innerHTML;
+            var inputValue = document.getElementById('input1').value = defaultvalue;
+           document.getElementById(id).innerHTML = inputValue;
+        }
+        //Function for to diaplay the update button on the click of edit button
+        function funcDisplay(id) {
+            a = id;
+            if (id) {
+                document.getElementById('update').style.display = "block";
+            }
+        }
+        //==========Function for the Update list============//
+        function funcUpdate() {
+           var upda=document.getElementById(a).innerHTML;
+           var updated=document.getElementById('input1').value;
+           document.getElementById(a).innerHTML=updated;
+           //console.log(a);
+        }
+        function check(id) {
+            if(id){
+           document.getElementById(id).style.textDecoration="line-through";
+            }}
+        function uncheck(id){
+            document.getElementById(id).style.textDecoration="none";
+        } 
+         // document.getElementById(id).style.textDecoration="none";
+        /*function addLocal(){
+            localStorage.setItem('key', JSON.stringify(array));
+           // document.getElementById('btn1').style.display="none";
+        }*/
+        //window.localStorage.setItem('key', JSON.stringify(array));
+        //===========================================================//
+        
+    function addLocal(){
+            localStorage.setItem('key', JSON.stringify(array));
+           // document.getElementById('btn1').style.display="none";
+    }
+    for(let i=0;i<array.length;i++){
+        //console.log(array[i])
+        //document.getElementById('demo').innerHTML;
+        var aaa= document.createElement("li");
+        var bbb= document.createElement("span");
+        var ccc= document.createElement("button");
+        var ddd= document.createElement("button");
+        document.getElementById('demo').appendChild(aaa);
+        aaa.appendChild(bbb);
+        aaa.appendChild(ccc);
+        aaa.appendChild(ddd);
+        //console.log(aaa);
+        bbb.innerHTML=array[i];
+        ccc.innerHTML="Delete";
+        ddd.innerHTML="Edit";
+        console.log(bbb);
+        }
+    </script>
+</body>
+</html>
